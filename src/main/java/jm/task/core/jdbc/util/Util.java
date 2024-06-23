@@ -14,7 +14,7 @@ public class Util {
     private static final String DB_USERNAME = "root";
     private static final String DB_PASSWORD = "1234";
 
-    public Connection getConnection() {
+    public static Connection getConnection() {
         Connection connection = null;
         try {
             Class.forName(DB_DRIVER);
@@ -25,6 +25,16 @@ public class Util {
             exception.printStackTrace();
         }
         return connection;
+    }
+
+    public static void shutdown() {
+        try {
+            getConnection().close();
+            System.out.println("Connection CLOSE");
+        } catch (SQLException e) {
+            System.out.println("Ошибка при закрытии соединения");
+            e.getMessage();
+        }
     }
 
 

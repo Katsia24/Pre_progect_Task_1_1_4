@@ -12,90 +12,57 @@ public class UserDaoJDBCImpl extends Util implements UserDao {
 
     }
 
-    Connection connection = getConnection();
+    private Connection connection = getConnection();
 
-    public void createUsersTable() throws SQLException {
-        Statement statement = null;
-        String sqlCreateUsersTable = "CREATE TABLE users(id INT PRIMARY KEY AUTO_INCREMENT, " +
+    public void createUsersTable() {
+        String sqlCreateUsersTable = "CREATE TABLE IF NOT EXISTS users(id INT PRIMARY KEY AUTO_INCREMENT, " +
                 "name NVARCHAR(20), lastName NVARCHAR(20), age TINYINT);";
-        try {
-            statement = connection.createStatement();
+        try (Statement statement = connection.createStatement()) {
             statement.execute(sqlCreateUsersTable);
         } catch (SQLException e) {
-            System.out.println("createUsersTable");
-            e.printStackTrace();
-        } finally {
-            if (statement != null) {
-                statement.close();
-            }
-//            if (connection != null) {
-//                connection.close();
-//            }
+            System.out.println("Error in createUsersTable");
+            e.getMessage();
         }
     }
 
-    public void dropUsersTable() throws SQLException {
-        Statement statement = null;
-        String sqlDropUsersTable = "DROP TABLE users;";
-        try {
-            statement = connection.createStatement();
+    public void dropUsersTable() {
+        String sqlDropUsersTable = "DROP TABLE IF EXISTS users;";
+        try (Statement statement = connection.createStatement()) {
             statement.execute(sqlDropUsersTable);
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        } finally {
-            if (statement != null) {
-                statement.close();
-            }
-//            if (connection != null) {
-//                connection.close();
-//            }
+            System.out.println("Error in dropUsersTable");
+            e.getMessage();
         }
     }
 
-    public void saveUser(String name, String lastName, byte age) throws SQLException {
-        PreparedStatement preparedStatement = null;
-        String sqlSaveUser = "INSERT users(name, lastName, age) " +
-                "VALUES ('" + name + "', '" + lastName + "', " + age + " );";
-        try {
-            preparedStatement = connection.prepareStatement(sqlSaveUser);
-            preparedStatement.executeUpdate();
-        } catch (SQLException exception) {
-            exception.printStackTrace();
-        } finally {
-            if (preparedStatement != null) {
-                preparedStatement.close();
-            }
-//            if (connection != null) {
-//                connection.close();
-//            }
-        }
-    }
-
-    public void removeUserById(long id) throws SQLException {
-        PreparedStatement preparedStatement = null;
-        String sqlRemoveUserById = "DELETE FROM users WHERE id=?;";
-        try {
-            preparedStatement = connection.prepareStatement(sqlRemoveUserById);
-            preparedStatement.setLong(1, id);
-            preparedStatement.executeUpdate();
+    public void saveUser(String name, String lastName, byte age) {
+        String sqlSaveUser = "INSERT users(name, lastName, age) VALUES (?, ?, ?);";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sqlSaveUser)) {
+            preparedStatement.setString(1, name);
+            preparedStatement.setString(2, lastName);
+            preparedStatement.setByte(3, age);
+            preparedStatement.execute();
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        } finally {
-            if (preparedStatement != null) {
-                preparedStatement.close();
-            }
-//            if (connection != null) {
-//                connection.close();
-//            }
+            System.out.println("Error in saveUser");
+            e.getMessage();
         }
     }
 
-    public List<User> getAllUsers() throws SQLException {
+    public void removeUserById(long id) {
+        String sqlRemoveUserById = "DELETE FROM users WHERE id=?;";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sqlRemoveUserById)) {
+            preparedStatement.setLong(1, id);
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            System.out.println("Error in removeUserById");
+            e.getMessage();
+        }
+    }
+
+    public List<User> getAllUsers() {
         List<User> userList = new ArrayList<>();
         String sqlGetAllUsers = "SELECT * FROM users LIMIT 100;";
-        Statement statement = null;
-        try {
-            statement = connection.createStatement();
+        try (Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(sqlGetAllUsers);
             while (resultSet.next()) {
                 User user = new User();
@@ -107,33 +74,19 @@ public class UserDaoJDBCImpl extends Util implements UserDao {
                 userList.add(user);
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        } finally {
-            if (statement != null) {
-                statement.close();
-            }
-//            if (connection != null) {
-//                connection.close();
-//            }
+            System.out.println("Error in getAllUsers");
+            e.getMessage();
         }
         return userList;
     }
 
-    public void cleanUsersTable() throws SQLException {
-        Statement statement = null;
+    public void cleanUsersTable() {
         String sqlCleanUsersTable = "TRUNCATE TABLE users;";
-        try {
-            statement = connection.createStatement();
+        try (Statement statement = connection.createStatement()) {
             statement.execute(sqlCleanUsersTable);
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        } finally {
-            if (statement != null) {
-                statement.close();
-            }
-//            if (connection != null) {
-//                connection.close();
-//            }
+            System.out.println("Error in cleanUsersTable");
+            e.getMessage();
         }
     }
 }
