@@ -89,14 +89,4 @@ public class UserDaoJDBCImpl implements UserDao {
             e.getMessage();
         }
     }
-
-    public void shutdownConn() {
-        try {
-            connection.close();
-            System.out.println("Connection CLOSE");
-        } catch (SQLException e) {
-            System.out.println("Ошибка при закрытии соединения");
-            e.getMessage();
-        }
-    }
 }
