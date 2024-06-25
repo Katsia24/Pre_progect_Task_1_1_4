@@ -1,23 +1,22 @@
 package jm.task.core.jdbc;
 
+import jm.task.core.jdbc.dao.UserDaoHibernateImpl;
+import jm.task.core.jdbc.dao.UserDaoJDBCImpl;
 import jm.task.core.jdbc.model.User;
 import jm.task.core.jdbc.service.UserServiceImpl;
 import jm.task.core.jdbc.util.Util;
-import org.hibernate.Session;
-
-import java.sql.SQLException;
 
 public class Main {
     public static void main(String[] args) {
         UserServiceImpl userServiceIml = new UserServiceImpl();
 
         userServiceIml.createUsersTable();
-        userServiceIml.createUsersTable();
 
         userServiceIml.saveUser("Name1", "LastName1", (byte) 20);
         userServiceIml.saveUser("Name2", "LastName2", (byte) 25);
         userServiceIml.saveUser("Name3", "LastName3", (byte) 31);
         userServiceIml.saveUser("Name4", "LastName4", (byte) 38);
+
         userServiceIml.removeUserById(1);
 
         for(User user : userServiceIml.getAllUsers()) {
@@ -25,18 +24,12 @@ public class Main {
         }
 
         userServiceIml.cleanUsersTable();
+        for(User user : userServiceIml.getAllUsers()) {
+            System.out.println(user);
+        }
+
         userServiceIml.dropUsersTable();
-        userServiceIml.dropUsersTable();
 
-        Util.shutdown(); // Закрытие соединения "getConnection().close();"
-
-
-//        Session session = Util.getSessionFactory().openSession();
-//
-//        session.beginTransaction();
-//
-//        session.getTransaction().commit();
-//        System.out.println("Done");
-//        session.close();
+        Util.shutdownHib(); // Закрытие соединения "getConnection().close();"
     }
 }
