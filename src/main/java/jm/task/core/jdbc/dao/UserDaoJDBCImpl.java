@@ -7,12 +7,12 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserDaoJDBCImpl extends Util implements UserDao {
+public class UserDaoJDBCImpl implements UserDao {
     public UserDaoJDBCImpl() {
-
+        connection = Util.getConnection();
     }
 
-    private Connection connection = getConnection();
+    private Connection connection;
 
     public void createUsersTable() {
         String sqlCreateUsersTable = "CREATE TABLE IF NOT EXISTS users(id INT PRIMARY KEY AUTO_INCREMENT, " +
@@ -86,6 +86,16 @@ public class UserDaoJDBCImpl extends Util implements UserDao {
             statement.execute(sqlCleanUsersTable);
         } catch (SQLException e) {
             System.out.println("Error in cleanUsersTable");
+            e.getMessage();
+        }
+    }
+
+    public void shutdownConn() {
+        try {
+            connection.close();
+            System.out.println("Connection CLOSE");
+        } catch (SQLException e) {
+            System.out.println("Ошибка при закрытии соединения");
             e.getMessage();
         }
     }

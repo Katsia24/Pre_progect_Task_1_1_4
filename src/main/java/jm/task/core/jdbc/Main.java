@@ -1,7 +1,5 @@
 package jm.task.core.jdbc;
 
-import jm.task.core.jdbc.dao.UserDaoHibernateImpl;
-import jm.task.core.jdbc.dao.UserDaoJDBCImpl;
 import jm.task.core.jdbc.model.User;
 import jm.task.core.jdbc.service.UserServiceImpl;
 import jm.task.core.jdbc.util.Util;
@@ -11,6 +9,7 @@ public class Main {
         UserServiceImpl userServiceIml = new UserServiceImpl();
 
         userServiceIml.createUsersTable();
+        userServiceIml.createUsersTable();
 
         userServiceIml.saveUser("Name1", "LastName1", (byte) 20);
         userServiceIml.saveUser("Name2", "LastName2", (byte) 25);
@@ -19,17 +18,17 @@ public class Main {
 
         userServiceIml.removeUserById(1);
 
-        for(User user : userServiceIml.getAllUsers()) {
+        for (User user : userServiceIml.getAllUsers()) {
             System.out.println(user);
         }
 
         userServiceIml.cleanUsersTable();
-        for(User user : userServiceIml.getAllUsers()) {
+        for (User user : userServiceIml.getAllUsers()) {
             System.out.println(user);
         }
 
         userServiceIml.dropUsersTable();
 
-        Util.shutdownHib(); // Закрытие соединения "getConnection().close();"
+         // Закрытие соединения "getConnection().close();"
     }
 }
