@@ -30,6 +30,6 @@ public class Main {
 
         userServiceIml.dropUsersTable();
 
-        Util.shutdownConn(); // getConnection().close();
+        Util.shutdownHib(); // getSessionFactory().close();
     }
 }
