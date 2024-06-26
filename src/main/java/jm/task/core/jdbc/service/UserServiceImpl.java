@@ -6,8 +6,8 @@ import jm.task.core.jdbc.model.User;
 
 import java.util.List;
 
-public class UserServiceImpl implements UserService { // измнено
-    private UserDao userDao = new UserDaoJDBCImpl(); // изменено
+public class UserServiceImpl implements UserService {
+    private UserDao userDao = new UserDaoJDBCImpl();
 
     public void createUsersTable() {
         userDao.createUsersTable();

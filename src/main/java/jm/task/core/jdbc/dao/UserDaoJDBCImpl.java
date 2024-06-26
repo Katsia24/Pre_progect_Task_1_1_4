@@ -21,7 +21,7 @@ public class UserDaoJDBCImpl implements UserDao {
             statement.execute(sqlCreateUsersTable);
         } catch (SQLException e) {
             System.out.println("Error in createUsersTable");
-            e.getMessage();
+            e.printStackTrace();
         }
     }
 
@@ -31,7 +31,7 @@ public class UserDaoJDBCImpl implements UserDao {
             statement.execute(sqlDropUsersTable);
         } catch (SQLException e) {
             System.out.println("Error in dropUsersTable");
-            e.getMessage();
+            e.printStackTrace();
         }
     }
 
@@ -44,7 +44,7 @@ public class UserDaoJDBCImpl implements UserDao {
             preparedStatement.execute();
         } catch (SQLException e) {
             System.out.println("Error in saveUser");
-            e.getMessage();
+            e.printStackTrace();
         }
     }
 
@@ -55,7 +55,7 @@ public class UserDaoJDBCImpl implements UserDao {
             preparedStatement.execute();
         } catch (SQLException e) {
             System.out.println("Error in removeUserById");
-            e.getMessage();
+            e.printStackTrace();
         }
     }
 
@@ -75,7 +75,7 @@ public class UserDaoJDBCImpl implements UserDao {
             }
         } catch (SQLException e) {
             System.out.println("Error in getAllUsers");
-            e.getMessage();
+            e.printStackTrace();
         }
         return userList;
     }
@@ -86,7 +86,7 @@ public class UserDaoJDBCImpl implements UserDao {
             statement.execute(sqlCleanUsersTable);
         } catch (SQLException e) {
             System.out.println("Error in cleanUsersTable");
-            e.getMessage();
+            e.printStackTrace();
         }
     }
 }
